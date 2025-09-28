@@ -1,22 +1,28 @@
 package com.scrooge.breadcrumbs.overview.ui
 
-import android.icu.util.Calendar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +42,7 @@ data class Bake(
     val type: String
 )
 
-val bakes = listOf(
+val bakesTemplate = listOf(
     Bake(OffsetDateTime.now(), "Brioche"),
     Bake(OffsetDateTime.now().minusDays(1), "Sourdough"),
     Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
@@ -56,11 +62,14 @@ fun Overview(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TitleBar(Modifier.fillMaxWidth())
+            var bakes by remember { mutableStateOf(bakesTemplate) }
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
-                bakes.forEach {
-                    BakeEntry(it)
+                bakes.forEachIndexed { index, it ->
+                    BakeEntry(it, Modifier.clickable {
+                        bakes = bakes.filterIndexed { filterIndex, _ -> filterIndex != index }
+                    }.padding(5.dp))
                 }
             }
         }
@@ -82,6 +91,7 @@ fun TitleBar(modifier: Modifier = Modifier) {
                 .aspectRatio(1f)
                 .fillMaxHeight()
         )
+        Spacer(Modifier.width(5.dp))
         Text(
             text = stringResource(R.string.app_name),
             fontSize = 40.sp,
@@ -96,7 +106,7 @@ fun BakeEntry(item: Bake, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp)
-            .border(1.dp, Color.Black),
+            .border(1.dp, Color.Black)
     ) {
         Row(
             modifier = Modifier.padding(4.dp),
