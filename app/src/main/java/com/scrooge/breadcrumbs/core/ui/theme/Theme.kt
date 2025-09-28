@@ -1,4 +1,4 @@
-package com.scrooge.breadcrumbs.core.theme
+package com.scrooge.breadcrumbs.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

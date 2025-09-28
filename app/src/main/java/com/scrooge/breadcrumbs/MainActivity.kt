@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import com.scrooge.breadcrumbs.overview.ui.Overview
-import com.scrooge.breadcrumbs.core.theme.BreadcrumbsTheme
+import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
