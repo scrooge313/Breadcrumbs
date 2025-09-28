@@ -1,4 +1,4 @@
-package com.scrooge.breadcrumbs.ui.overview
+package com.scrooge.breadcrumbs.overview.ui
 
 import android.icu.util.Calendar
 import androidx.compose.foundation.Image
@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrooge.breadcrumbs.R
-import com.scrooge.breadcrumbs.ui.theme.BreadcrumbsTheme
+import com.scrooge.breadcrumbs.core.theme.BreadcrumbsTheme
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter

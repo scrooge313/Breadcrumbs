@@ -1,4 +1,4 @@
-package com.scrooge.breadcrumbs.ui.theme
+package com.scrooge.breadcrumbs.core.theme
 
 import androidx.compose.ui.graphics.Color
 
