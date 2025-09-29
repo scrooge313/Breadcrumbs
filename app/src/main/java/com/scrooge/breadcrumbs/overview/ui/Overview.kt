@@ -1,5 +1,6 @@
 package com.scrooge.breadcrumbs.overview.ui
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,7 +50,19 @@ val bakesTemplate = listOf(
     Bake(OffsetDateTime.now(), "Brioche"),
     Bake(OffsetDateTime.now().minusDays(1), "Sourdough"),
     Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
+    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
+    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
+    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
+    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
 )
+
+@VisibleForTesting
+@Composable
+internal fun computeTimeDelta(dateTime: OffsetDateTime): String {
+    val deltaTimeInSeconds = OffsetDateTime.now().toEpochSecond() - dateTime.toEpochSecond()
+    val deltaTimeInDays = (deltaTimeInSeconds / 60 / 60 / 24).toInt()
+    return pluralStringResource(R.plurals.days_ago, deltaTimeInDays, deltaTimeInDays)
+}
 
 @Composable
 fun Overview(modifier: Modifier = Modifier) {
@@ -64,7 +80,8 @@ fun Overview(modifier: Modifier = Modifier) {
             TitleBar(Modifier.fillMaxWidth())
             var bakes by remember { mutableStateOf(bakesTemplate) }
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
             ) {
                 bakes.forEachIndexed { index, it ->
                     BakeEntry(it, Modifier.clickable {
@@ -118,7 +135,7 @@ fun BakeEntry(item: Bake, modifier: Modifier = Modifier) {
             )
             val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             Text(
-                text = item.date.format(dateFormatter),
+                text = computeTimeDelta(item.date),
                 fontSize = 15.sp
             )
         }
