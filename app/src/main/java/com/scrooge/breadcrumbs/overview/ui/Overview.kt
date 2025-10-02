@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,24 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrooge.breadcrumbs.R
 import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
+import com.scrooge.breadcrumbs.overview.data.DummyBakingDatasource
+import com.scrooge.breadcrumbs.overview.model.Baking
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-
-data class Bake(
-    val date: OffsetDateTime,
-    val type: String
-)
-
-val bakesTemplate = listOf(
-    Bake(OffsetDateTime.now(), "Brioche"),
-    Bake(OffsetDateTime.now().minusDays(1), "Sourdough"),
-    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
-    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
-    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
-    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
-    Bake(OffsetDateTime.now().minusDays(2), "Sourdough"),
-)
 
 @VisibleForTesting
 @Composable
@@ -78,14 +65,14 @@ fun Overview(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TitleBar(Modifier.fillMaxWidth())
-            var bakes by remember { mutableStateOf(bakesTemplate) }
-            Column(
-                modifier = Modifier.fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
+            var bakings by remember { mutableStateOf(DummyBakingDatasource().getBakings()) }
+            LazyColumn(
+                modifier = Modifier
+//                    .verticalScroll(rememberScrollState()),
             ) {
-                bakes.forEachIndexed { index, it ->
-                    BakeEntry(it, Modifier.clickable {
-                        bakes = bakes.filterIndexed { filterIndex, _ -> filterIndex != index }
+                itemsIndexed(bakings) { index, it ->
+                    BakingEntry(it, Modifier.clickable {
+                        bakings = bakings.filterIndexed { filterIndex, _ -> filterIndex != index }
                     }.padding(5.dp))
                 }
             }
@@ -118,7 +105,7 @@ fun TitleBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BakeEntry(item: Bake, modifier: Modifier = Modifier) {
+fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
