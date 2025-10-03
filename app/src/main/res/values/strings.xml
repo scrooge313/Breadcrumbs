@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Breadcrumbs</string>
+    <string name="expand_button_content_description">Expand</string>
     <plurals name="days_ago">
         <item quantity="one">%d day ago</item>
         <item quantity="other">%d days ago</item>

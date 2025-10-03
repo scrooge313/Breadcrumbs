@@ -1,6 +1,9 @@
 package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,10 +22,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -118,30 +127,72 @@ fun TopBar(modifier: Modifier = Modifier) {
 @Composable
 fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier
-            .height(IntrinsicSize.Max),
+        modifier = modifier,
         border = BorderStroke(
             1.dp,
             Color.Black,
         ),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .padding(10.dp)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                ),
         ) {
-            Text(
-                text = item.type,
-            )
-            Text(
-                text = computeTimeDelta(item.date),
-                fontSize = 15.sp
-            )
+            var expanded by remember { mutableStateOf(false) }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = item.type,
+                )
+                Spacer(
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = computeTimeDelta(item.date),
+                    fontSize = 15.sp
+                )
+                BakingEntryToggle(expanded = expanded, onClick = {
+                    expanded = !expanded
+                })
+            }
+            if (expanded) {
+                BakingDetails()
+            }
         }
     }
+}
+
+@Composable
+private fun BakingEntryToggle(
+    expanded: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier,
+    ) {
+        Icon(
+            imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+            contentDescription = stringResource(R.string.expand_button_content_description),
+        )
+    }
+}
+
+@Composable
+private fun BakingDetails(modifier: Modifier = Modifier) {
+    Text("Placeholder")
 }
 
 @Preview(showBackground = true)
