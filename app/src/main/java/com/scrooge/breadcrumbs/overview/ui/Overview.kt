@@ -1,6 +1,7 @@
 package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -126,13 +127,18 @@ fun TopBar(modifier: Modifier = Modifier) {
 
 @Composable
 fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
+    var expanded by remember { mutableStateOf(false) }
+    val backgroundColor by animateColorAsState( // todo just used for demo purposes
+        if (expanded) MaterialTheme.colorScheme.primary
+        else MaterialTheme.colorScheme.primaryContainer
+    )
     Card(
         modifier = modifier,
         border = BorderStroke(
             1.dp,
-            Color.Black,
+            MaterialTheme.colorScheme.onPrimaryContainer,
         ),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+        colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
         Column(
             modifier = Modifier
@@ -145,7 +151,6 @@ fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
                     )
                 ),
         ) {
-            var expanded by remember { mutableStateOf(false) }
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
