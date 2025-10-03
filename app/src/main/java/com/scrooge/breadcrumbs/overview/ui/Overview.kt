@@ -1,7 +1,9 @@
 package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +20,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -71,9 +79,15 @@ fun Overview(modifier: Modifier = Modifier) {
 //                    .verticalScroll(rememberScrollState()),
             ) {
                 itemsIndexed(bakings) { index, it ->
-                    BakingEntry(it, Modifier.clickable {
-                        bakings = bakings.filterIndexed { filterIndex, _ -> filterIndex != index }
-                    }.padding(5.dp))
+                    BakingEntry(
+                        it, Modifier
+                            .clickable {
+                                bakings =
+                                    bakings.filterIndexed { filterIndex, _ -> filterIndex != index }
+                            }
+                            .padding(2.dp)
+                            .fillMaxWidth()
+                    )
                 }
             }
         }
@@ -98,29 +112,30 @@ fun TitleBar(modifier: Modifier = Modifier) {
         Spacer(Modifier.width(5.dp))
         Text(
             text = stringResource(R.string.app_name),
-            fontSize = 40.sp,
-            lineHeight = 40.sp,
+            style = MaterialTheme.typography.displayLarge,
         )
     }
 }
 
 @Composable
 fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
-    Surface(
+    Card(
         modifier = modifier
-            .fillMaxWidth()
-            .height(50.dp)
-            .border(1.dp, Color.Black)
+            .height(IntrinsicSize.Max),
+        border = BorderStroke(
+                1.dp,
+                Color.Black,
+        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
     ) {
         Row(
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
             horizontalArrangement = Arrangement.Absolute.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = item.type,
             )
-            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             Text(
                 text = computeTimeDelta(item.date),
                 fontSize = 15.sp
@@ -133,6 +148,14 @@ fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
 @Composable
 fun OverviewPreview() {
     BreadcrumbsTheme {
+        Overview(Modifier.fillMaxSize())
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DarkOverviewPreview() {
+    BreadcrumbsTheme(darkTheme = true) {
         Overview(Modifier.fillMaxSize())
     }
 }
