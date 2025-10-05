@@ -42,8 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -88,7 +87,7 @@ fun Overview(modifier: Modifier = Modifier) {
                             bakings =
                                 bakings.filterIndexed { filterIndex, _ -> filterIndex != index }
                         }
-                        .padding(2.dp)
+                        .padding(dimensionResource(R.dimen.tiny))
                         .fillMaxWidth()
                 )
             }
@@ -114,7 +113,7 @@ fun TopBar(modifier: Modifier = Modifier) {
                         .aspectRatio(1f)
                         .fillMaxHeight()
                 )
-                Spacer(Modifier.width(5.dp))
+                Spacer(Modifier.width(dimensionResource(R.dimen.small)))
                 Text(
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.displayLarge,
@@ -135,7 +134,7 @@ fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         border = BorderStroke(
-            1.dp,
+            dimensionResource(R.dimen.barely),
             MaterialTheme.colorScheme.onPrimaryContainer,
         ),
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
@@ -143,7 +142,7 @@ fun BakingEntry(item: Baking, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(dimensionResource(R.dimen.medium))
                 .animateContentSize(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioNoBouncy,
