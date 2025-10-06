@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Breadcrumbs</string>
     <string name="expand_button_content_description">Expand</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="you_really_want_to_delete_this_baking">You really want to delete this baking?</string>
     <plurals name="days_ago">
         <item quantity="one">%d day ago</item>
         <item quantity="other">%d days ago</item>

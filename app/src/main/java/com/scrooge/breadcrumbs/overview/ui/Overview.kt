@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -35,6 +36,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -75,6 +77,8 @@ fun Overview(modifier: Modifier = Modifier) {
         modifier = modifier
     ) { innerPadding ->
         var bakings by remember { mutableStateOf(DummyBakingDatasource().getBakings()) }
+        var showDeleteConfirmation by remember { mutableStateOf(false) }
+        var confirmAction by remember { mutableStateOf({}) }
         LazyColumn(
             contentPadding = innerPadding,
             modifier = Modifier
@@ -84,13 +88,23 @@ fun Overview(modifier: Modifier = Modifier) {
                 BakingEntry(
                     it, Modifier
                         .clickable {
-                            bakings =
-                                bakings.filterIndexed { filterIndex, _ -> filterIndex != index }
+                            showDeleteConfirmation = true
+                            confirmAction = {
+                                bakings =
+                                    bakings.filterIndexed { filterIndex, _ -> filterIndex != index }
+                                showDeleteConfirmation = false
+                            }
                         }
                         .padding(dimensionResource(R.dimen.tiny))
                         .fillMaxWidth()
                 )
             }
+        }
+        if (showDeleteConfirmation) {
+            DeleteWarningDialog(
+                { showDeleteConfirmation = false },
+                confirmAction
+            )
         }
     }
 }
@@ -197,6 +211,30 @@ private fun BakingEntryToggle(
 @Composable
 private fun BakingDetails(modifier: Modifier = Modifier) {
     Text("Placeholder")
+}
+
+@Composable
+fun DeleteWarningDialog(
+    dismissAction: () -> Unit,
+    confirmAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = {},
+        title = { Text(stringResource(R.string.are_you_sure)) },
+        text = { Text(stringResource(R.string.you_really_want_to_delete_this_baking)) },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(onClick = dismissAction) {
+                Text(stringResource(R.string.cancel))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = confirmAction) {
+                Text(stringResource(R.string.confirm))
+            }
+        },
+    )
 }
 
 @Preview(showBackground = true)
