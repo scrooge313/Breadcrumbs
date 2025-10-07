@@ -4,14 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.scrooge.breadcrumbs.ui.theme.BreadcrumbsTheme
+import androidx.compose.ui.platform.LocalLayoutDirection
+import com.scrooge.breadcrumbs.overview.ui.Overview
+import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +24,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BreadcrumbsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                val layoutDirection = LocalLayoutDirection.current
+                Overview(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding() // for not overlapping the status bar
+                        .padding( // for not overlapping the status bar
+                            start = WindowInsets.safeDrawing.asPaddingValues()
+                                .calculateStartPadding(layoutDirection),
+                            end = WindowInsets.safeDrawing.asPaddingValues()
+                                .calculateEndPadding(layoutDirection)
+                        )
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BreadcrumbsTheme {
-        Greeting("Android")
     }
 }
