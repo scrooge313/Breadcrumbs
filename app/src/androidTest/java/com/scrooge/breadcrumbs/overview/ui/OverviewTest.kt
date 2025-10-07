@@ -40,6 +40,8 @@ class OverviewTest {
         }
         composeTestRule.onNodeWithText("Brioche").assertExists()
         composeTestRule.onNodeWithText("Brioche").performClick()
+        composeTestRule.onNodeWithText("Delete").assertExists()
+        composeTestRule.onNodeWithText("Delete").performClick()
         composeTestRule.onNodeWithText("Brioche").assertDoesNotExist()
     }
 }
