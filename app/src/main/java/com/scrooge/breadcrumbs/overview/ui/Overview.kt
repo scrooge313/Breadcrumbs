@@ -53,8 +53,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.scrooge.breadcrumbs.R
+import com.scrooge.breadcrumbs.core.ui.components.deleteWarningDialog
 import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
 import com.scrooge.breadcrumbs.overview.data.DummyBakingDatasource
 import com.scrooge.breadcrumbs.overview.model.Baking
@@ -78,8 +80,11 @@ fun Overview(modifier: Modifier = Modifier, viewModel: OverviewViewModel = viewM
         },
         modifier = modifier
     ) { innerPadding ->
-        var showDeleteConfirmation by remember { mutableStateOf(false) }
         var confirmAction by remember { mutableStateOf({}) }
+        val showDeleteWarningDialog = deleteWarningDialog(
+            confirmAction = confirmAction,
+            R.string.you_really_want_to_delete_this_baking
+        )
         LazyColumn(
             contentPadding = innerPadding,
             modifier = Modifier
@@ -89,22 +94,15 @@ fun Overview(modifier: Modifier = Modifier, viewModel: OverviewViewModel = viewM
                 BakingEntry(
                     it, Modifier
                         .clickable {
-                            showDeleteConfirmation = true
+                            showDeleteWarningDialog()
                             confirmAction = {
                                 viewModel.deleteBaking(index)
-                                showDeleteConfirmation = false
                             }
                         }
                         .padding(dimensionResource(R.dimen.tiny))
                         .fillMaxWidth()
                 )
             }
-        }
-        if (showDeleteConfirmation) {
-            DeleteWarningDialog(
-                { showDeleteConfirmation = false },
-                confirmAction
-            )
         }
     }
 }
@@ -211,30 +209,6 @@ private fun BakingEntryToggle(
 @Composable
 private fun BakingDetails(modifier: Modifier = Modifier) {
     Text("Placeholder")
-}
-
-@Composable
-fun DeleteWarningDialog(
-    dismissAction: () -> Unit,
-    confirmAction: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    AlertDialog(
-        onDismissRequest = {},
-        title = { Text(stringResource(R.string.are_you_sure)) },
-        text = { Text(stringResource(R.string.you_really_want_to_delete_this_baking)) },
-        modifier = modifier,
-        dismissButton = {
-            TextButton(onClick = dismissAction) {
-                Text(stringResource(R.string.cancel))
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = confirmAction) {
-                Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
-            }
-        },
-    )
 }
 
 @Preview(showBackground = true)
