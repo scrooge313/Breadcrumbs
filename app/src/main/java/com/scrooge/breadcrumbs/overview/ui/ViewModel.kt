@@ -2,15 +2,10 @@ package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.lifecycle.ViewModel
 import com.scrooge.breadcrumbs.overview.data.DummyBakingDatasource
-import com.scrooge.breadcrumbs.overview.model.Baking
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.collections.filterIndexed
-
-data class OverviewUiState(
-    val bakings: List<Baking>
-)
 
 class OverviewViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<OverviewUiState>(OverviewUiState(
