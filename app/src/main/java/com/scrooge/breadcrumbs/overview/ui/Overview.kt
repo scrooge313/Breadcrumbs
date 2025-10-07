@@ -56,10 +56,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.scrooge.breadcrumbs.R
+import com.scrooge.breadcrumbs.baking.model.Baking
 import com.scrooge.breadcrumbs.core.ui.components.deleteWarningDialog
 import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
-import com.scrooge.breadcrumbs.overview.data.DummyBakingDatasource
-import com.scrooge.breadcrumbs.overview.model.Baking
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
