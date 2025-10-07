@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -38,6 +39,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +53,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.scrooge.breadcrumbs.R
 import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
 import com.scrooge.breadcrumbs.overview.data.DummyBakingDatasource
@@ -67,16 +70,14 @@ internal fun computeTimeDelta(dateTime: OffsetDateTime): String {
 }
 
 @Composable
-fun Overview(modifier: Modifier = Modifier) {
-    LocalDate.now()
-    OffsetDateTime.now()
+fun Overview(modifier: Modifier = Modifier, viewModel: OverviewViewModel = viewModel()) {
+    val uiState by viewModel.uiState.collectAsState() // todo lifecycle dependency
     Scaffold(
         topBar = {
             TopBar()
         },
         modifier = modifier
     ) { innerPadding ->
-        var bakings by remember { mutableStateOf(DummyBakingDatasource().getBakings()) }
         var showDeleteConfirmation by remember { mutableStateOf(false) }
         var confirmAction by remember { mutableStateOf({}) }
         LazyColumn(
@@ -84,14 +85,13 @@ fun Overview(modifier: Modifier = Modifier) {
             modifier = Modifier
 //                    .verticalScroll(rememberScrollState()),
         ) {
-            itemsIndexed(bakings) { index, it ->
+            itemsIndexed(uiState.bakings) { index, it ->
                 BakingEntry(
                     it, Modifier
                         .clickable {
                             showDeleteConfirmation = true
                             confirmAction = {
-                                bakings =
-                                    bakings.filterIndexed { filterIndex, _ -> filterIndex != index }
+                                viewModel.deleteBaking(index)
                                 showDeleteConfirmation = false
                             }
                         }
@@ -231,7 +231,7 @@ fun DeleteWarningDialog(
         },
         confirmButton = {
             TextButton(onClick = confirmAction) {
-                Text(stringResource(R.string.confirm))
+                Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
             }
         },
     )
@@ -241,7 +241,7 @@ fun DeleteWarningDialog(
 @Composable
 fun OverviewPreview() {
     BreadcrumbsTheme {
-        Overview(Modifier.fillMaxSize())
+        Overview(modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -249,6 +249,6 @@ fun OverviewPreview() {
 @Composable
 fun DarkOverviewPreview() {
     BreadcrumbsTheme(darkTheme = true) {
-        Overview(Modifier.fillMaxSize())
+        Overview(modifier = Modifier.fillMaxSize())
     }
 }
