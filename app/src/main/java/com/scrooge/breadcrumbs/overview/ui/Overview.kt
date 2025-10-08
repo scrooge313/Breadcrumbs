@@ -71,68 +71,31 @@ internal fun computeTimeDelta(dateTime: OffsetDateTime): String {
 }
 
 @Composable
-fun Overview(modifier: Modifier = Modifier, viewModel: OverviewViewModel = viewModel()) {
+fun OverviewScreen(modifier: Modifier = Modifier, viewModel: OverviewViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState() // todo lifecycle dependency
-    Scaffold(
-        topBar = {
-            TopBar()
-        },
+    var confirmAction by remember { mutableStateOf({}) }
+    val showDeleteWarningDialog = deleteWarningDialog(
+        confirmAction = confirmAction,
+        R.string.you_really_want_to_delete_this_baking
+    )
+    LazyColumn(
         modifier = modifier
-    ) { innerPadding ->
-        var confirmAction by remember { mutableStateOf({}) }
-        val showDeleteWarningDialog = deleteWarningDialog(
-            confirmAction = confirmAction,
-            R.string.you_really_want_to_delete_this_baking
-        )
-        LazyColumn(
-            contentPadding = innerPadding,
-            modifier = Modifier
 //                    .verticalScroll(rememberScrollState()),
-        ) {
-            itemsIndexed(uiState.bakings) { index, it ->
-                BakingEntry(
-                    it, Modifier
-                        .clickable {
-                            showDeleteWarningDialog()
-                            confirmAction = {
-                                viewModel.deleteBaking(index)
-                            }
+    ) {
+        itemsIndexed(uiState.bakings) { index, it ->
+            BakingEntry(
+                it, Modifier
+                    .clickable {
+                        showDeleteWarningDialog()
+                        confirmAction = {
+                            viewModel.deleteBaking(index)
                         }
-                        .padding(dimensionResource(R.dimen.tiny))
-                        .fillMaxWidth()
-                )
-            }
+                    }
+                    .padding(dimensionResource(R.dimen.tiny))
+                    .fillMaxWidth()
+            )
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBar(modifier: Modifier = Modifier) {
-    CenterAlignedTopAppBar(
-        title = {
-            Row(
-                modifier = Modifier.height(IntrinsicSize.Min),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                val image = painterResource(R.drawable.bread)
-                Image(
-                    painter = image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxHeight()
-                )
-                Spacer(Modifier.width(dimensionResource(R.dimen.small)))
-                Text(
-                    text = stringResource(R.string.app_name),
-                    style = MaterialTheme.typography.displayLarge,
-                )
-            }
-        },
-        modifier = modifier
-    )
 }
 
 @Composable
@@ -214,7 +177,7 @@ private fun BakingDetails(modifier: Modifier = Modifier) {
 @Composable
 fun OverviewPreview() {
     BreadcrumbsTheme {
-        Overview(modifier = Modifier.fillMaxSize())
+        OverviewScreen(modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -222,6 +185,6 @@ fun OverviewPreview() {
 @Composable
 fun DarkOverviewPreview() {
     BreadcrumbsTheme(darkTheme = true) {
-        Overview(modifier = Modifier.fillMaxSize())
+        OverviewScreen(modifier = Modifier.fillMaxSize())
     }
 }
