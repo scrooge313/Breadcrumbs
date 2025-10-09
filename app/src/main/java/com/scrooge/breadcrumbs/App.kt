@@ -29,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.scrooge.breadcrumbs.baking.model.BakingId
+import com.scrooge.breadcrumbs.baking.ui.BakingScreen
 import com.scrooge.breadcrumbs.overview.ui.OverviewScreen
 import kotlinx.serialization.Serializable
 import kotlin.reflect.typeOf
@@ -65,11 +66,13 @@ fun BreadcrumbsApp(
                 )
             }
             composable<NavigationDestination.BakingDetails> {
-                Column {
-                    Text("HELLO")
-                    Text(it.destination.route.toString())
-                    Text(it.toRoute<NavigationDestination.BakingDetails>().bakingId.toString())
-                }
+                val route = it.toRoute<NavigationDestination.BakingDetails>()
+                BakingScreen(
+                    bakingId = route.bakingId,
+                    onCancel = { },
+                    onShare = { },
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
         }
     }
