@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.scrooge.breadcrumbs.R
 import com.scrooge.breadcrumbs.baking.model.Baking
-import com.scrooge.breadcrumbs.core.ui.components.deleteWarningDialog
+import com.scrooge.breadcrumbs.baking.model.BakingId
 import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
 import java.time.OffsetDateTime
 
@@ -54,25 +54,20 @@ internal fun computeTimeDelta(dateTime: OffsetDateTime): String {
 }
 
 @Composable
-fun OverviewScreen(modifier: Modifier = Modifier, viewModel: OverviewViewModel = viewModel()) {
+fun OverviewScreen(
+    onSelectBaking: (bakingId: BakingId) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: OverviewViewModel = viewModel()
+) {
     val uiState by viewModel.uiState.collectAsState() // todo lifecycle dependency
-    var confirmAction by remember { mutableStateOf({}) }
-    val showDeleteWarningDialog = deleteWarningDialog(
-        confirmAction = confirmAction,
-        R.string.you_really_want_to_delete_this_baking
-    )
     LazyColumn(
         modifier = modifier
-//                    .verticalScroll(rememberScrollState()),
     ) {
         itemsIndexed(uiState.bakings) { index, it ->
             BakingEntry(
                 it, Modifier
                     .clickable {
-                        showDeleteWarningDialog()
-                        confirmAction = {
-                            viewModel.deleteBaking(index)
-                        }
+                        onSelectBaking(it.id)
                     }
                     .padding(dimensionResource(R.dimen.tiny))
                     .fillMaxWidth()
@@ -160,7 +155,7 @@ private fun BakingDetails(modifier: Modifier = Modifier) {
 @Composable
 fun OverviewPreview() {
     BreadcrumbsTheme {
-        OverviewScreen(modifier = Modifier.fillMaxSize())
+        OverviewScreen(onSelectBaking = {}, modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -168,6 +163,6 @@ fun OverviewPreview() {
 @Composable
 fun DarkOverviewPreview() {
     BreadcrumbsTheme(darkTheme = true) {
-        OverviewScreen(modifier = Modifier.fillMaxSize())
+        OverviewScreen(onSelectBaking = {}, modifier = Modifier.fillMaxSize())
     }
 }

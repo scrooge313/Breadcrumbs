@@ -57,8 +57,10 @@ fun BreadcrumbsApp(
             modifier = modifier.padding(innerPadding)
         ) {
             composable<NavigationDestination.Overview> {
-                navController.navigate(NavigationDestination.BakingDetails(1))
                 OverviewScreen(
+                    onSelectBaking = { bakingId ->
+                        navController.navigate(NavigationDestination.BakingDetails(bakingId))
+                    },
                     modifier = Modifier.fillMaxSize()
                 )
             }
