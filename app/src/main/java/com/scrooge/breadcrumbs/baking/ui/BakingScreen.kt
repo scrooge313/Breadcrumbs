@@ -75,7 +75,7 @@ fun BakingScreen(
     Column(modifier = modifier.padding(dimensionResource(R.dimen.medium))) {
         Text(bakingId.toString())
         Button(
-            onClick = onCancel,
+            onClick = onShare,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(stringResource(R.string.share))
