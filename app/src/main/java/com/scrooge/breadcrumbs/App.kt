@@ -69,7 +69,12 @@ fun BreadcrumbsApp(
                 val route = it.toRoute<NavigationDestination.BakingDetails>()
                 BakingScreen(
                     bakingId = route.bakingId,
-                    onCancel = { },
+                    onCancel = {
+                        navController.popBackStack(
+                            route = NavigationDestination.Overview,
+                            inclusive = false,
+                        )
+                    },
                     onShare = { },
                     modifier = Modifier.fillMaxSize(),
                 )
