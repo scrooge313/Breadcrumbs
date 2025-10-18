@@ -35,7 +35,10 @@ class OverviewTest {
     fun delete_entry() {
         composeTestRule.setContent {
             BreadcrumbsTheme {
-                Overview(Modifier.fillMaxSize())
+                OverviewScreen(
+                    onSelectBaking = { },
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
         }
         composeTestRule.onNodeWithText("Brioche").assertExists()
