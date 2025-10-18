@@ -2,10 +2,8 @@ package com.scrooge.breadcrumbs
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -45,13 +43,21 @@ import com.scrooge.breadcrumbs.baking.model.BakingId
 import com.scrooge.breadcrumbs.baking.ui.BakingScreen
 import com.scrooge.breadcrumbs.overview.ui.OverviewScreen
 import kotlinx.serialization.Serializable
-import kotlin.reflect.typeOf
 
 sealed interface NavigationDestination {
     @Serializable
     object Overview : NavigationDestination
     @Serializable
-    data class BakingDetails(val bakingId: BakingId) : NavigationDestination
+    data class Baking(val bakingId: BakingId) : NavigationDestination
+}
+
+fun NavBackStackEntry?.toRoute(): NavigationDestination? {
+    return when (this?.destination?.route?.split("/")?.first()) {
+        null -> null
+        NavigationDestination.Overview::class.qualifiedName -> this.toRoute<NavigationDestination.Overview>()
+        NavigationDestination.Baking::class.qualifiedName -> this.toRoute<NavigationDestination.Baking>()
+        else -> error("Unspecified route")
+    }
 }
 
 fun NavController.navigateBackHome() {
@@ -83,6 +89,7 @@ fun BreadcrumbsApp(
 ) {
     // necessary for updates on route change
     val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry.toRoute()
     Scaffold(
         topBar = {
             TopBar(
@@ -101,13 +108,13 @@ fun BreadcrumbsApp(
             composable<NavigationDestination.Overview> {
                 OverviewScreen(
                     onSelectBaking = { bakingId ->
-                        navController.navigate(NavigationDestination.BakingDetails(bakingId))
+                        navController.navigate(NavigationDestination.Baking(bakingId))
                     },
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            composable<NavigationDestination.BakingDetails> {
-                val route = it.toRoute<NavigationDestination.BakingDetails>()
+            composable<NavigationDestination.Baking> {
+                val route = it.toRoute<NavigationDestination.Baking>()
                 val context = LocalContext.current
                 BakingScreen(
                     bakingId = route.bakingId,
