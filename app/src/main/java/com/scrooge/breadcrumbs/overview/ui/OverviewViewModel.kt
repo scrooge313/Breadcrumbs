@@ -1,7 +1,7 @@
 package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.lifecycle.ViewModel
-import com.scrooge.breadcrumbs.overview.data.DummyBakingDatasource
+import com.scrooge.breadcrumbs.baking.data.DummyBakingDatasource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import com.scrooge.breadcrumbs.overview.ui.Overview
 import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BreadcrumbsTheme {
                 val layoutDirection = LocalLayoutDirection.current
-                Overview(
+                BreadcrumbsApp(
                     modifier = Modifier
                         .fillMaxSize()
                         .statusBarsPadding() // for not overlapping the status bar
