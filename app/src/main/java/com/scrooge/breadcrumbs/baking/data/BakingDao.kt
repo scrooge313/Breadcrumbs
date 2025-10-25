@@ -22,6 +22,7 @@ interface BakingDao {
     @Query("SELECT * from bakings WHERE id = :id")
     fun getItem(id: Int): Flow<Baking>
 
-    @Query("SELECT * from bakings ORDER BY date DESC")
+//    @Query("SELECT * from bakings ORDER BY date DESC")
+    @Query("SELECT * from bakings ORDER BY name DESC")
     fun getAllItems(): Flow<List<Baking>>
 }

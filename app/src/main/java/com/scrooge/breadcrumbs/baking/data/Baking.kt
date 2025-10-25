@@ -9,7 +9,7 @@ data class Baking(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val date: OffsetDateTime,
-    val observations: List<String>,
+//    val date: OffsetDateTime,
+//    val observations: List<String>,
     // todo baking process
 )
