@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serializer)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.android.hilt)
 }
 
 android {
@@ -64,4 +66,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.intents)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 }
