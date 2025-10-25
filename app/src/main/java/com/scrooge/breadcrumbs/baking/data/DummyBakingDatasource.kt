@@ -3,8 +3,9 @@ package com.scrooge.breadcrumbs.baking.data
 import com.scrooge.breadcrumbs.baking.model.Baking
 import com.scrooge.breadcrumbs.baking.model.BakingId
 import java.time.OffsetDateTime
+import javax.inject.Inject
 
-class DummyBakingDatasource {
+class DummyBakingDatasource @Inject constructor() {
     private var bakings = listOf(
         Baking(1, OffsetDateTime.now(), "Brioche"),
         Baking(2, OffsetDateTime.now().minusDays(1), "Sourdough"),
