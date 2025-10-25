@@ -2,14 +2,19 @@ package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.lifecycle.ViewModel
 import com.scrooge.breadcrumbs.baking.data.DummyBakingDatasource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 import kotlin.collections.filterIndexed
 
-class OverviewViewModel : ViewModel() {
+@HiltViewModel
+class OverviewViewModel @Inject constructor(
+    private val bakingDatasource: DummyBakingDatasource,
+) : ViewModel() {
     private val _uiState = MutableStateFlow<OverviewUiState>(OverviewUiState(
-        bakings = DummyBakingDatasource().getBakings()
+        bakings = bakingDatasource.getBakings()
     ))
     val uiState = _uiState.asStateFlow()
 
