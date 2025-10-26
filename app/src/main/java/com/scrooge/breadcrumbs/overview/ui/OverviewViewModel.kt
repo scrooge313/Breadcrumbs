@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrooge.breadcrumbs.baking.data.DummyBakingDatasource
 import com.scrooge.breadcrumbs.baking.model.Baking
+import com.scrooge.breadcrumbs.core.CONFIGURATION_CHANGE_TIMEOUT
 import com.scrooge.breadcrumbs.data.BakingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,6 @@ import kotlin.collections.filterIndexed
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
-    private val bakingDatasource: DummyBakingDatasource,
     private val bakingsRepository: BakingsRepository,
 ) : ViewModel() {
     val uiState = bakingsRepository.getAllBakings()
@@ -31,7 +31,7 @@ class OverviewViewModel @Inject constructor(
             })
         }.stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
+            SharingStarted.WhileSubscribed(CONFIGURATION_CHANGE_TIMEOUT),
             OverviewUiState(bakings = emptyList())
         )
 
