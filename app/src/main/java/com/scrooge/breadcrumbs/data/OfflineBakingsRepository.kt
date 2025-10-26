@@ -3,8 +3,11 @@ package com.scrooge.breadcrumbs.data
 import com.scrooge.breadcrumbs.baking.data.Baking
 import com.scrooge.breadcrumbs.baking.data.BakingDao
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class OfflineBakingsRepository(private val bakingDao: BakingDao) : BakingsRepository{
+class OfflineBakingsRepository @Inject constructor(
+    private val bakingDao: BakingDao
+) : BakingsRepository {
     override fun getAllBakings(): Flow<List<Baking>> = bakingDao.getAllItems()
 
     override fun getAllBakings(id: Int): Flow<Baking> = bakingDao.getItem(id)
