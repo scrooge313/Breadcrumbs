@@ -6,11 +6,8 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.navigation.NavController
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.scrooge.breadcrumbs.NavigationDestination
 import com.scrooge.breadcrumbs.R
-import org.junit.Assert.assertEquals
 
 fun <A: ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<A>, A>.onNodeWithStringId(
     @StringRes stringId: Int

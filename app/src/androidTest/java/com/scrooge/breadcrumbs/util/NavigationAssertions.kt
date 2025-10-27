@@ -1,7 +1,7 @@
 package com.scrooge.breadcrumbs.util
 
 import androidx.navigation.NavController
-import com.scrooge.breadcrumbs.NavigationDestination
+import com.scrooge.breadcrumbs.app.NavigationDestination
 import org.junit.Assert.assertEquals
 
 inline fun <reified T: NavigationDestination> NavController.assertCurrentRoute() {

@@ -1,4 +1,4 @@
-package com.scrooge.breadcrumbs
+package com.scrooge.breadcrumbs.app
 
 import android.content.Context
 import android.content.Intent
@@ -39,6 +39,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.scrooge.breadcrumbs.R
 import com.scrooge.breadcrumbs.baking.model.BakingId
 import com.scrooge.breadcrumbs.baking.ui.BakingScreen
 import com.scrooge.breadcrumbs.overview.ui.OverviewScreen

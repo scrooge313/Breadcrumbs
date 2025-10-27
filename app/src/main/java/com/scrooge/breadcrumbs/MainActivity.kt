@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
+import com.scrooge.breadcrumbs.app.BreadcrumbsApp
 import com.scrooge.breadcrumbs.core.ui.theme.BreadcrumbsTheme
 import dagger.hilt.android.AndroidEntryPoint
 

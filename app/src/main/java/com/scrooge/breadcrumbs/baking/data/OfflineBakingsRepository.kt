@@ -1,7 +1,7 @@
-package com.scrooge.breadcrumbs.data
+package com.scrooge.breadcrumbs.baking.data
 
-import com.scrooge.breadcrumbs.baking.data.Baking
-import com.scrooge.breadcrumbs.baking.data.BakingDao
+import com.scrooge.breadcrumbs.databaseapi.data.baking.Baking
+import com.scrooge.breadcrumbs.databaseapi.data.baking.BakingDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
