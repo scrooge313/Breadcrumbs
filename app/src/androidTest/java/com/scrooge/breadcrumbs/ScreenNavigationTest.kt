@@ -7,13 +7,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.scrooge.breadcrumbs.app.BreadcrumbsApp
+import com.scrooge.breadcrumbs.app.NavigationDestination
 import com.scrooge.breadcrumbs.util.assertCurrentRoute
 import com.scrooge.breadcrumbs.util.onNodeWithStringId
 import com.scrooge.breadcrumbs.util.onUpButton
 
 import org.junit.Test
-import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
@@ -42,7 +42,8 @@ class ScreenNavigationTest {
 
     @Test
     fun navHost_verifyStartDestination() {
-        assertEquals(true, navController.currentBackStackEntry?.destination?.route?.startsWith(NavigationDestination.Overview::class.qualifiedName!!))
+        assertEquals(true, navController.currentBackStackEntry?.destination?.route?.startsWith(
+            NavigationDestination.Overview::class.qualifiedName!!))
         navController.assertCurrentRoute<NavigationDestination.Overview>()
         composeTestRule.onNodeWithStringId(R.string.app_name).assertExists()
         composeTestRule.onUpButton().assertDoesNotExist()

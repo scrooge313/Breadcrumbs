@@ -1,11 +1,9 @@
 package com.scrooge.breadcrumbs.overview.ui
 
-import com.scrooge.breadcrumbs.baking.data.Baking
-import com.scrooge.breadcrumbs.data.BakingsRepository
+import com.scrooge.breadcrumbs.databaseapi.data.baking.Baking
+import com.scrooge.breadcrumbs.baking.data.BakingsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert

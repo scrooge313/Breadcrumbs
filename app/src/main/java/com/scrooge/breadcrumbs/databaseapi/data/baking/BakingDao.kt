@@ -1,4 +1,4 @@
-package com.scrooge.breadcrumbs.baking.data
+package com.scrooge.breadcrumbs.databaseapi.data.baking
 
 import androidx.room.Dao
 import androidx.room.Delete

@@ -1,8 +1,7 @@
-package com.scrooge.breadcrumbs.baking.data
+package com.scrooge.breadcrumbs.databaseapi.data.baking
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.OffsetDateTime
 
 @Entity(tableName = "bakings")
 data class Baking(

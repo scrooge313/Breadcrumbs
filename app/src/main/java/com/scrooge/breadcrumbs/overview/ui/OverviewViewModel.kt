@@ -2,20 +2,15 @@ package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.scrooge.breadcrumbs.baking.data.DummyBakingDatasource
 import com.scrooge.breadcrumbs.baking.model.Baking
 import com.scrooge.breadcrumbs.core.CONFIGURATION_CHANGE_TIMEOUT
-import com.scrooge.breadcrumbs.data.BakingsRepository
+import com.scrooge.breadcrumbs.baking.data.BakingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import java.time.OffsetDateTime
 import javax.inject.Inject
-import kotlin.collections.filterIndexed
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
