@@ -22,7 +22,7 @@ object ApplicationProvisions {
             BreadcrumbsDatabase::class.java,
             "breadcrumbs_database"
         )
-            .fallbackToDestructiveMigration(false)
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 
