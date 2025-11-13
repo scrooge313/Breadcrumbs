@@ -156,7 +156,7 @@ fun TopBar(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                val image = painterResource(R.drawable.bread)
+                val image = painterResource(R.drawable.raw_bread)
                 Image(
                     painter = image,
                     contentDescription = null,
