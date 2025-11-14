@@ -101,7 +101,8 @@ data class Macro(
 )
 
 @Entity(
-    tableName = "macro_amounts",
+    tableName = "macro_per_ingredient",
+    primaryKeys = ["macro_id", "ingredient_id"],
     foreignKeys = [
         ForeignKey(
             entity = Macro::class,
@@ -117,9 +118,8 @@ data class Macro(
         ),
     ]
 )
-data class MacroAmount(
-    @PrimaryKey(autoGenerate = true) val id: Long,
-    @ColumnInfo("macro_id") val macroId: Long?,
+data class MacroPerIngredient(
+    @ColumnInfo("macro_id") val macroId: Long,
     @ColumnInfo("ingredient_id") val ingredientId: Long,
     @ColumnInfo("grams_per_100_grams") val gramsPer100Grams: Float,
 )
@@ -149,7 +149,7 @@ data class Ingredient(
 )
 
 @Entity(
-    tableName = "ingredient_amounts",
+    tableName = "ingredient_per_baking",
     foreignKeys = [
         ForeignKey(
             entity = Ingredient::class,
@@ -159,7 +159,7 @@ data class Ingredient(
         ),
     ]
 )
-data class IngredientAmount(
+data class IngredientPerBaking(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     @ColumnInfo("ingredient_id")

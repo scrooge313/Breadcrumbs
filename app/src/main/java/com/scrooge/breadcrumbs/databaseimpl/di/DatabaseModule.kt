@@ -3,6 +3,8 @@ package com.scrooge.breadcrumbs.databaseimpl.di
 import android.content.Context
 import androidx.room.Room
 import com.scrooge.breadcrumbs.databaseapi.data.baking.BakingDao
+import com.scrooge.breadcrumbs.databaseapi.data.ingredient.IngredientDao
+import com.scrooge.breadcrumbs.databaseapi.data.internationalization.LocalizationDao
 import com.scrooge.breadcrumbs.databaseimpl.data.BreadcrumbsDatabase
 import dagger.Module
 import dagger.Provides
@@ -20,14 +22,24 @@ object ApplicationProvisions {
         return Room.databaseBuilder(
             context,
             BreadcrumbsDatabase::class.java,
-            "breadcrumbs_database"
+            "breadcrumbs.db"
         )
             .fallbackToDestructiveMigration(true)
             .build()
     }
 
     @Provides
+    fun provideLocalizationDao(database: BreadcrumbsDatabase): LocalizationDao {
+        return database.localizationDao()
+    }
+
+    @Provides
     fun provideBakingsDao(database: BreadcrumbsDatabase): BakingDao {
         return database.bakingDao()
+    }
+
+    @Provides
+    fun provideIngredientsDao(database: BreadcrumbsDatabase): IngredientDao {
+        return database.ingredientDao()
     }
 }
