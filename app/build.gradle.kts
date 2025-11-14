@@ -41,6 +41,10 @@ android {
     buildFeatures {
         compose = true
     }
+
+    androidResources {
+        noCompress.add(".db")
+    }
 }
 
 room {

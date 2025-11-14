@@ -24,7 +24,7 @@ object ApplicationProvisions {
             BreadcrumbsDatabase::class.java,
             "breadcrumbs.db"
         )
-            .fallbackToDestructiveMigration(true)
+            .createFromAsset("breadcrumbs_test.db")
             .build()
     }
 
