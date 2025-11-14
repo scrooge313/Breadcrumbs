@@ -20,9 +20,8 @@ interface BakingDao {
     suspend fun delete(baking: Baking)
 
     @Query("SELECT * from bakings WHERE id = :id")
-    fun getItem(id: Int): Flow<Baking>
+    fun getItem(id: Long): Flow<Baking>
 
-//    @Query("SELECT * from bakings ORDER BY date DESC")
     @Query("SELECT * from bakings ORDER BY date DESC")
     fun getAllItems(): Flow<List<Baking>>
 }
