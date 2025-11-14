@@ -10,7 +10,7 @@ class OfflineBakingsRepository @Inject constructor(
 ) : BakingsRepository {
     override fun getAllBakings(): Flow<List<Baking>> = bakingDao.getAllItems()
 
-    override fun getBaking(id: Int): Flow<Baking> = bakingDao.getItem(id)
+    override fun getBaking(id: Long): Flow<Baking> = bakingDao.getItem(id)
 
     override suspend fun insertBaking(baking: Baking) = bakingDao.insert(baking)
 

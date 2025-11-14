@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 @Entity(tableName = "bakings")
 data class Baking(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Long = 0,
     val name: String,
     val date: OffsetDateTime,
 //    val observations: List<String>,
