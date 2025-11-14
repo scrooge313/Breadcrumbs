@@ -34,12 +34,12 @@ object ApplicationProvisions {
     }
 
     @Provides
-    fun provideBakingsDao(database: BreadcrumbsDatabase): BakingDao {
-        return database.bakingDao()
+    fun provideIngredientsDao(database: BreadcrumbsDatabase): IngredientDao {
+        return database.ingredientDao()
     }
 
     @Provides
-    fun provideIngredientsDao(database: BreadcrumbsDatabase): IngredientDao {
-        return database.ingredientDao()
+    fun provideBakingsDao(database: BreadcrumbsDatabase): BakingDao {
+        return database.bakingDao()
     }
 }

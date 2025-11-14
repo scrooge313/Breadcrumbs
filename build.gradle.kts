@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.kotlin.serializer) apply false
     alias(libs.plugins.kotlin.ksp) apply false
     alias(libs.plugins.android.hilt) apply false
+    alias(libs.plugins.androidx.room) apply false
 }
