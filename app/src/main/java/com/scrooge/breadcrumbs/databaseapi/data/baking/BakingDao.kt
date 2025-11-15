@@ -11,17 +11,17 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BakingDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(baking: Baking)
+    suspend fun insert(baking: BakingEntity)
 
     @Update
-    suspend fun update(baking: Baking)
+    suspend fun update(baking: BakingEntity)
 
     @Delete
-    suspend fun delete(baking: Baking)
+    suspend fun delete(baking: BakingEntity)
 
     @Query("SELECT * from bakings WHERE id = :id")
-    fun getItem(id: Long): Flow<Baking>
+    fun getItem(id: Long): Flow<BakingEntity>
 
     @Query("SELECT * from bakings ORDER BY date DESC")
-    fun getAllItems(): Flow<List<Baking>>
+    fun getAllItems(): Flow<List<BakingEntity>>
 }

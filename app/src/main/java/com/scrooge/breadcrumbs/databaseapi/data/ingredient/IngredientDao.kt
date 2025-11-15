@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.Flow
 
 data class StructuredIngredient(
     @Embedded
-    val ingredient: Ingredient,
+    val ingredient: IngredientEntity,
     val name: String,
     @Relation(
         parentColumn = "id",
         entityColumn = "ingredient_id"
     )
-    val macroPerIngredients: List<MacroPerIngredient>
+    val macroPerIngredients: List<MacroPerIngredientEntity>
 )
 
 @Dao
@@ -30,5 +30,5 @@ interface IngredientDao {
         INNER JOIN languages lang ON ing_loc.language_id = lang.id
         AND lang.language_code = 'de' and :languageCode = :languageCode
     """)
-    fun getAllIngredients(languageCode: String): Flow<List<StructuredIngredient>> // todo test in action
+    fun getAllIngredients(languageCode: String): Flow<List<StructuredIngredient>>
 }

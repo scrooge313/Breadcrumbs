@@ -3,27 +3,27 @@ package com.scrooge.breadcrumbs.databaseimpl.data
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.scrooge.breadcrumbs.databaseapi.data.baking.Baking
 import com.scrooge.breadcrumbs.databaseapi.data.baking.BakingDao
-import com.scrooge.breadcrumbs.databaseapi.data.ingredient.Ingredient
-import com.scrooge.breadcrumbs.databaseapi.data.ingredient.IngredientPerBaking
+import com.scrooge.breadcrumbs.databaseapi.data.baking.BakingEntity
+import com.scrooge.breadcrumbs.databaseapi.data.baking.IngredientPerBakingEntity
 import com.scrooge.breadcrumbs.databaseapi.data.ingredient.IngredientDao
-import com.scrooge.breadcrumbs.databaseapi.data.ingredient.Macro
-import com.scrooge.breadcrumbs.databaseapi.data.ingredient.MacroPerIngredient
-import com.scrooge.breadcrumbs.databaseapi.data.internationalization.Language
-import com.scrooge.breadcrumbs.databaseapi.data.internationalization.Localization
+import com.scrooge.breadcrumbs.databaseapi.data.ingredient.IngredientEntity
+import com.scrooge.breadcrumbs.databaseapi.data.ingredient.MacroEntity
+import com.scrooge.breadcrumbs.databaseapi.data.ingredient.MacroPerIngredientEntity
+import com.scrooge.breadcrumbs.databaseapi.data.internationalization.LanguageEntity
+import com.scrooge.breadcrumbs.databaseapi.data.internationalization.LocalizationEntity
 import com.scrooge.breadcrumbs.databaseapi.data.internationalization.LocalizationDao
 import com.scrooge.breadcrumbs.databaseimpl.data.converters.DateConverter
 
 @Database(
     entities = [
-        Language::class,
-        Localization::class,
-        Macro::class,
-        MacroPerIngredient::class,
-        Ingredient::class,
-        IngredientPerBaking::class,
-        Baking::class
+        LanguageEntity::class,
+        LocalizationEntity::class,
+        MacroEntity::class,
+        MacroPerIngredientEntity::class,
+        IngredientEntity::class,
+        IngredientPerBakingEntity::class,
+        BakingEntity::class
     ],
     version = 1,
     exportSchema = true,

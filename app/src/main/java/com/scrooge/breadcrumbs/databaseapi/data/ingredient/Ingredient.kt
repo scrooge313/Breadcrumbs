@@ -24,15 +24,6 @@ import androidx.room.PrimaryKey
 //    BakingSoda,
 //}
 //
-//@Entity(tableName = "ingredient_specializations")
-//data class IngredientSpecialization(
-//    @PrimaryKey(autoGenerate = true)
-//    val id: Long = 0,
-//    val ingredient: Ingredient,
-//    val description: String,
-//    // todo macros here? or implicit?
-//)
-//
 //enum class Macro {
 //    Water,
 //    Fat,
@@ -44,54 +35,17 @@ import androidx.room.PrimaryKey
 //    Protein,
 //}
 //
-//@Entity(
-//    tableName = "macros_per_100_g",
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = IngredientSpecialization::class,
-//            parentColumns = ["id"],
-//            childColumns = ["ingredient_specialization_id"],
-//            onDelete = ForeignKey.CASCADE
-//        )
-//    ]
-//)
-//data class Macros(
-//    @PrimaryKey(autoGenerate = true)
-//    val id: Long = 0,
-//    val ingredientSpecialization: IngredientSpecialization,
-//    val macro: Macro,
-//    val valueInGrams: Float,
-//)
-//
 //enum class Unit {
 //    Grams,
 //    Milliliters,
 //    Amount,
 //}
-//
-//@Entity(
-//    tableName = "ingredient_amounts",
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = IngredientSpecialization::class,
-//            parentColumns = ["id"],
-//            childColumns = ["ingredient_specialization_id"],
-//            onDelete = ForeignKey.CASCADE
-//        )
-//    ]
-//)
-//data class IngredientAmount(
-//    val id: Long,
-//    val ingredient: Ingredient,
-//    val specification: String,
-//    val amount: String,
-//    val unit: Unit,
-//)
+
 
 @Entity(
     tableName = "macros"
 )
-data class Macro(
+data class MacroEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     @ColumnInfo("name_localization_id")
@@ -105,37 +59,40 @@ data class Macro(
     primaryKeys = ["macro_id", "ingredient_id"],
     foreignKeys = [
         ForeignKey(
-            entity = Macro::class,
+            entity = MacroEntity::class,
             parentColumns = ["id"],
             childColumns = ["macro_id"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = Ingredient::class,
+            entity = IngredientEntity::class,
             parentColumns = ["id"],
             childColumns = ["ingredient_id"],
             onDelete = ForeignKey.CASCADE
         ),
     ]
 )
-data class MacroPerIngredient(
-    @ColumnInfo("macro_id") val macroId: Long,
-    @ColumnInfo("ingredient_id") val ingredientId: Long,
-    @ColumnInfo("grams_per_100_grams") val gramsPer100Grams: Float,
+data class MacroPerIngredientEntity(
+    @ColumnInfo("macro_id")
+    val macroId: Long,
+    @ColumnInfo("ingredient_id")
+    val ingredientId: Long,
+    @ColumnInfo("grams_per_100_grams")
+    val gramsPer100Grams: Float,
 )
 
 @Entity(
     tableName = "ingredients",
     foreignKeys = [
         ForeignKey(
-            entity = Ingredient::class,
+            entity = IngredientEntity::class,
             parentColumns = ["id"],
             childColumns = ["generalized_ingredient_id"],
             onDelete = ForeignKey.CASCADE
         ),
     ]
 )
-data class Ingredient(
+data class IngredientEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     @ColumnInfo("generalized_ingredient_id")
@@ -148,23 +105,3 @@ data class Ingredient(
     val caloriesPer100Grams: Float?,
 )
 
-@Entity(
-    tableName = "ingredient_per_baking",
-    foreignKeys = [
-        ForeignKey(
-            entity = Ingredient::class,
-            parentColumns = ["id"],
-            childColumns = ["ingredient_id"],
-            onDelete = ForeignKey.CASCADE
-        ),
-    ]
-)
-data class IngredientPerBaking(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long,
-    @ColumnInfo("ingredient_id")
-    val ingredientId: Long,
-    @ColumnInfo("grams")
-    val grams: Float,
-    // todo reference recipe or recipe step via fk
-)

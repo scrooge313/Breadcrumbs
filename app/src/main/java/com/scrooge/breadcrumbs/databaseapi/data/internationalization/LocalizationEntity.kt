@@ -9,14 +9,14 @@ import androidx.room.ForeignKey
     primaryKeys = ["language_id", "localization_id"],
     foreignKeys = [
         ForeignKey(
-            entity = Language::class,
+            entity = LanguageEntity::class,
             parentColumns = ["id"],
             childColumns = ["language_id"],
             onDelete = ForeignKey.CASCADE,
         )
     ],
 )
-data class Localization(
+data class LocalizationEntity(
     @ColumnInfo("language_id")
     val languageId: Short,
     @ColumnInfo("localization_id")
