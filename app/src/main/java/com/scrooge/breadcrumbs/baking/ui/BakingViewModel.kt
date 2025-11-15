@@ -1,8 +1,8 @@
 package com.scrooge.breadcrumbs.baking.ui
 
 import androidx.lifecycle.ViewModel
+import com.scrooge.breadcrumbs.baking.domain.repositories.BakingsRepository
 import com.scrooge.breadcrumbs.baking.model.BakingId
-import com.scrooge.breadcrumbs.baking.data.BakingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -20,5 +20,5 @@ class BakingViewModel @Inject constructor(
     }
 
     fun getBaking(bakingId: BakingId) =
-        bakingsRepository.getBaking(bakingId)
+        bakingsRepository.getBakingDetails(bakingId)
 }

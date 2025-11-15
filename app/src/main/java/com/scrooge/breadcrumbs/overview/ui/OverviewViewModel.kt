@@ -2,9 +2,9 @@ package com.scrooge.breadcrumbs.overview.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.scrooge.breadcrumbs.baking.domain.repositories.BakingsRepository
 import com.scrooge.breadcrumbs.baking.model.Baking
 import com.scrooge.breadcrumbs.core.CONFIGURATION_CHANGE_TIMEOUT
-import com.scrooge.breadcrumbs.baking.data.BakingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -20,7 +20,7 @@ class OverviewViewModel @Inject constructor(
         .map { bakings ->
             OverviewUiState(bakings = bakings.map { baking ->
                 Baking(
-                    baking.id,
+                    baking.bakingId,
                     OffsetDateTime.now(), baking.name
                 )
             })
