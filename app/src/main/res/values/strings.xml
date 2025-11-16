@@ -8,6 +8,7 @@
     <string name="you_really_want_to_delete_this_baking">You really want to delete this baking?</string>
     <string name="delete">Delete</string>
     <string name="back_button">Navigate back</string>
+    <string name="settings">Settings</string>
     <plurals name="days_ago">
         <item quantity="one">%d day ago</item>
         <item quantity="other">%d days ago</item>
