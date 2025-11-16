@@ -3,6 +3,7 @@ package com.scrooge.breadcrumbs.databaseapi.data.ingredient
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 //enum class Ingredient {
@@ -55,7 +56,7 @@ data class MacroEntity(
 )
 
 @Entity(
-    tableName = "macro_per_ingredient",
+    tableName = "macros_per_ingredient", // todo rename to plural
     primaryKeys = ["macro_id", "ingredient_id"],
     foreignKeys = [
         ForeignKey(
@@ -70,7 +71,11 @@ data class MacroEntity(
             childColumns = ["ingredient_id"],
             onDelete = ForeignKey.CASCADE
         ),
-    ]
+    ],
+    indices = [
+        Index("macro_id"),
+        Index("ingredient_id"),
+    ],
 )
 data class MacroPerIngredientEntity(
     @ColumnInfo("macro_id")
@@ -102,6 +107,6 @@ data class IngredientEntity(
     @ColumnInfo("company")
     val company: String?,
     @ColumnInfo("calories_per_100_gram")
-    val caloriesPer100Grams: Float?,
+    val caloriesPer100Grams: Float,
 )
 

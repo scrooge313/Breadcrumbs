@@ -7,28 +7,34 @@ import androidx.room.Relation
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
-data class StructuredIngredient(
+data class IngredientWithMacrosDbState(
     @Embedded
     val ingredient: IngredientEntity,
-    val name: String,
     @Relation(
+        entity = MacroPerIngredientEntity::class,
         parentColumn = "id",
-        entityColumn = "ingredient_id"
+        entityColumn = "ingredient_id",
     )
-    val macroPerIngredients: List<MacroPerIngredientEntity>
+    val macroPerIngredients: List<MacroPerIngredientWithMacroDbState>
+)
+
+data class MacroPerIngredientWithMacroDbState(
+    @Embedded
+    val macroPerIngredient: MacroPerIngredientEntity,
+    @Relation(
+        entity = MacroEntity::class,
+        parentColumn = "macro_id",
+        entityColumn = "id"
+    )
+    val macro: MacroEntity,
 )
 
 @Dao
 interface IngredientDao {
     @Transaction
-    @Query("""
-        SELECT
-            ing.*,
-            ing_loc.value as name
-        FROM ingredients ing
-        INNER JOIN localizations ing_loc ON ing.name_localization_id = ing_loc.localization_id
-        INNER JOIN languages lang ON ing_loc.language_id = lang.id
-        AND lang.language_code = 'de' and :languageCode = :languageCode
-    """)
-    fun getAllIngredients(languageCode: String): Flow<List<StructuredIngredient>>
+    @Query("SELECT * FROM ingredients")
+    fun getAllIngredients(): Flow<List<IngredientWithMacrosDbState>>
+
+    @Query("SELECT * FROM ingredients WHERE id = :id")
+    fun getIngredient(id: Long): Flow<IngredientWithMacrosDbState>
 }

@@ -20,5 +20,5 @@ data class IngredientAmountDetails(
 data class MacroAmountDetails(
     val macroId: Long,
     val name: String,
-    val caloriesPer100Grams: Float,
+    val caloriesPer100Grams: Float?,
 )
