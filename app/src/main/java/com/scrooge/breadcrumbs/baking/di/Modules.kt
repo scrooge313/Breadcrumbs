@@ -1,7 +1,7 @@
 package com.scrooge.breadcrumbs.baking.di
 
-import com.scrooge.breadcrumbs.baking.data.BakingsRepository
 import com.scrooge.breadcrumbs.baking.data.OfflineBakingsRepository
+import com.scrooge.breadcrumbs.baking.domain.repositories.BakingsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

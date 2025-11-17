@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serializer)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.android.hilt)
+    alias(libs.plugins.androidx.room)
 }
 
 android {
@@ -40,6 +41,14 @@ android {
     buildFeatures {
         compose = true
     }
+
+    androidResources {
+        noCompress.add(".db")
+    }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
@@ -72,4 +81,5 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.datastore.preferences)
 }

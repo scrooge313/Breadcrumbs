@@ -1,0 +1,392 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d891793ddae024d8ab5ca4e39986bf9e",
+    "entities": [
+      {
+        "tableName": "languages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `language_code` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "languageCode",
+            "columnName": "language_code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_languages_language_code",
+            "unique": true,
+            "columnNames": [
+              "language_code"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_languages_language_code` ON `${TABLE_NAME}` (`language_code`)"
+          }
+        ]
+      },
+      {
+        "tableName": "localizations",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`language_id` INTEGER NOT NULL, `localization_id` INTEGER NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`language_id`, `localization_id`), FOREIGN KEY(`language_id`) REFERENCES `languages`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "languageId",
+            "columnName": "language_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localizationId",
+            "columnName": "localization_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "language_id",
+            "localization_id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "languages",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "language_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "language_localizations",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`language_id` INTEGER NOT NULL, `localization_id` INTEGER NOT NULL, PRIMARY KEY(`language_id`, `localization_id`), FOREIGN KEY(`language_id`) REFERENCES `languages`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "languageId",
+            "columnName": "language_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localizationId",
+            "columnName": "localization_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "language_id",
+            "localization_id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "languages",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "language_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "macros",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name_localization_id` INTEGER NOT NULL, `calories_per_100_gram` REAL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameLocalizationId",
+            "columnName": "name_localization_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "caloriesPer100Grams",
+            "columnName": "calories_per_100_gram",
+            "affinity": "REAL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "ingredients",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `generalized_ingredient_id` INTEGER, `name_localization_id` INTEGER NOT NULL, `company` TEXT, `calories_per_100_gram` REAL NOT NULL, FOREIGN KEY(`generalized_ingredient_id`) REFERENCES `ingredients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "generalizedIngredientId",
+            "columnName": "generalized_ingredient_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "nameLocalizationId",
+            "columnName": "name_localization_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "company",
+            "columnName": "company",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "caloriesPer100Grams",
+            "columnName": "calories_per_100_gram",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "ingredients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "generalized_ingredient_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "macros_per_ingredient",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`macro_id` INTEGER NOT NULL, `ingredient_id` INTEGER NOT NULL, `grams_per_100_grams` REAL NOT NULL, PRIMARY KEY(`macro_id`, `ingredient_id`), FOREIGN KEY(`macro_id`) REFERENCES `macros`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`ingredient_id`) REFERENCES `ingredients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "macroId",
+            "columnName": "macro_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ingredientId",
+            "columnName": "ingredient_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gramsPer100Grams",
+            "columnName": "grams_per_100_grams",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "macro_id",
+            "ingredient_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_macros_per_ingredient_macro_id",
+            "unique": false,
+            "columnNames": [
+              "macro_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_macros_per_ingredient_macro_id` ON `${TABLE_NAME}` (`macro_id`)"
+          },
+          {
+            "name": "index_macros_per_ingredient_ingredient_id",
+            "unique": false,
+            "columnNames": [
+              "ingredient_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_macros_per_ingredient_ingredient_id` ON `${TABLE_NAME}` (`ingredient_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "macros",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "macro_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "ingredients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "ingredient_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "bakings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `date` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "ingredients_per_baking",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`baking_id` INTEGER NOT NULL, `ingredient_id` INTEGER NOT NULL, `grams` REAL NOT NULL, PRIMARY KEY(`baking_id`, `ingredient_id`), FOREIGN KEY(`baking_id`) REFERENCES `bakings`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`ingredient_id`) REFERENCES `ingredients`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "bakingId",
+            "columnName": "baking_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ingredientId",
+            "columnName": "ingredient_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "grams",
+            "columnName": "grams",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "baking_id",
+            "ingredient_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_ingredients_per_baking_baking_id",
+            "unique": false,
+            "columnNames": [
+              "baking_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ingredients_per_baking_baking_id` ON `${TABLE_NAME}` (`baking_id`)"
+          },
+          {
+            "name": "index_ingredients_per_baking_ingredient_id",
+            "unique": false,
+            "columnNames": [
+              "ingredient_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ingredients_per_baking_ingredient_id` ON `${TABLE_NAME}` (`ingredient_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "bakings",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "baking_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "ingredients",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "ingredient_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd891793ddae024d8ab5ca4e39986bf9e')"
+    ]
+  }
+}

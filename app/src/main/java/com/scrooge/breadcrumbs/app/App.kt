@@ -2,6 +2,9 @@ package com.scrooge.breadcrumbs.app
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -16,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -43,20 +48,34 @@ import com.scrooge.breadcrumbs.R
 import com.scrooge.breadcrumbs.baking.model.BakingId
 import com.scrooge.breadcrumbs.baking.ui.BakingScreen
 import com.scrooge.breadcrumbs.overview.ui.OverviewScreen
+import com.scrooge.breadcrumbs.settings.ui.SettingsScreen
 import kotlinx.serialization.Serializable
 
-sealed interface NavigationDestination {
+private sealed interface NavigationDestination {
+    val isSubscreen: Boolean
+
     @Serializable
-    object Overview : NavigationDestination
+    object Overview : NavigationDestination {
+        override val isSubscreen = false
+    }
+
     @Serializable
-    data class Baking(val bakingId: BakingId) : NavigationDestination
+    data class Baking(val bakingId: BakingId) : NavigationDestination {
+        override val isSubscreen = false
+    }
+
+    @Serializable
+    object Settings : NavigationDestination {
+        override val isSubscreen = true
+    }
 }
 
-fun NavBackStackEntry?.toRoute(): NavigationDestination? {
+private fun NavBackStackEntry?.toRoute(): NavigationDestination? {
     return when (this?.destination?.route?.split("/")?.first()) {
         null -> null
         NavigationDestination.Overview::class.qualifiedName -> this.toRoute<NavigationDestination.Overview>()
         NavigationDestination.Baking::class.qualifiedName -> this.toRoute<NavigationDestination.Baking>()
+        NavigationDestination.Settings::class.qualifiedName -> this.toRoute<NavigationDestination.Settings>()
         else -> error("Unspecified route")
     }
 }
@@ -93,17 +112,25 @@ fun BreadcrumbsApp(
     val currentRoute = backStackEntry.toRoute()
     Scaffold(
         topBar = {
-            TopBar(
-                canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() },
-                modifier = Modifier.fillMaxWidth()
-            )
+            if (currentRoute?.isSubscreen == true) {
+                TopUpBar({ navController.navigateUp() })
+            } else {
+                TopBar(
+                    canNavigateBack = navController.previousBackStackEntry != null,
+                    navigateUp = { navController.navigateUp() },
+                    navigateToSettings = { navController.navigate(NavigationDestination.Settings) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         },
         modifier = modifier
     ) { innerPadding ->
+        val navHostFadeDuration = 200
         NavHost(
             navController = navController,
             startDestination = NavigationDestination.Overview,
+            enterTransition = { fadeIn(animationSpec = tween(navHostFadeDuration)) },
+            exitTransition = { fadeOut(animationSpec = tween(navHostFadeDuration)) },
             modifier = modifier.padding(innerPadding)
         ) {
             composable<NavigationDestination.Overview> {
@@ -128,6 +155,9 @@ fun BreadcrumbsApp(
                     modifier = Modifier.fillMaxSize(),
                 )
             }
+            composable<NavigationDestination.Settings> {
+                SettingsScreen()
+            }
         }
     }
 }
@@ -137,11 +167,12 @@ fun BreadcrumbsApp(
 fun TopBar(
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
+    navigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     CenterAlignedTopAppBar(
         navigationIcon = {
-            if(canNavigateBack) {
+            if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -150,19 +181,30 @@ fun TopBar(
                 }
             }
         },
+        actions = {
+            IconButton(
+                onClick = navigateToSettings,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Settings,
+                    contentDescription = stringResource(R.string.settings),
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        },
         title = {
             Row(
                 modifier = Modifier.height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                val image = painterResource(R.drawable.bread)
+                val image = painterResource(R.drawable.raw_bread)
                 Image(
                     painter = image,
                     contentDescription = null,
                     modifier = Modifier
+                        .fillMaxHeight(0.7f)
                         .aspectRatio(1f)
-                        .fillMaxHeight()
                 )
                 Spacer(Modifier.width(dimensionResource(R.dimen.small)))
                 Text(
@@ -171,6 +213,26 @@ fun TopBar(
                 )
             }
         },
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopUpBar(
+    navigateUp: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    TopAppBar(
+        navigationIcon = {
+            IconButton(onClick = navigateUp) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back_button)
+                )
+            }
+        },
+        title = { },
         modifier = modifier
     )
 }

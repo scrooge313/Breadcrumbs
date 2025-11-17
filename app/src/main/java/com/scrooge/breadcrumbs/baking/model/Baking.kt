@@ -2,7 +2,7 @@ package com.scrooge.breadcrumbs.baking.model
 
 import java.time.OffsetDateTime
 
-typealias BakingId = Int
+typealias BakingId = Long
 
 data class Baking(
     val id: BakingId,
