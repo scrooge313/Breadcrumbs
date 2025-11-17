@@ -2,6 +2,9 @@ package com.scrooge.breadcrumbs.app
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -33,7 +36,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -123,9 +125,12 @@ fun BreadcrumbsApp(
         },
         modifier = modifier
     ) { innerPadding ->
+        val navHostFadeDuration = 200
         NavHost(
             navController = navController,
             startDestination = NavigationDestination.Overview,
+            enterTransition = { fadeIn(animationSpec = tween(navHostFadeDuration)) },
+            exitTransition = { fadeOut(animationSpec = tween(navHostFadeDuration)) },
             modifier = modifier.padding(innerPadding)
         ) {
             composable<NavigationDestination.Overview> {
