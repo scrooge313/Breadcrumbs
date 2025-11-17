@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2b68b467b0995bb5c6280e548d21db3e",
+    "identityHash": "d891793ddae024d8ab5ca4e39986bf9e",
     "entities": [
       {
         "tableName": "languages",
@@ -26,7 +26,18 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_languages_language_code",
+            "unique": true,
+            "columnNames": [
+              "language_code"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_languages_language_code` ON `${TABLE_NAME}` (`language_code`)"
+          }
+        ]
       },
       {
         "tableName": "localizations",
@@ -375,7 +386,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2b68b467b0995bb5c6280e548d21db3e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd891793ddae024d8ab5ca4e39986bf9e')"
     ]
   }
 }

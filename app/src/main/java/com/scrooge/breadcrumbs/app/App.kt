@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -54,10 +56,12 @@ private sealed interface NavigationDestination {
     object Overview : NavigationDestination {
         override val isSubscreen = false
     }
+
     @Serializable
     data class Baking(val bakingId: BakingId) : NavigationDestination {
         override val isSubscreen = false
     }
+
     @Serializable
     object Settings : NavigationDestination {
         override val isSubscreen = true
@@ -106,7 +110,7 @@ fun BreadcrumbsApp(
     val currentRoute = backStackEntry.toRoute()
     Scaffold(
         topBar = {
-            if(currentRoute?.isSubscreen == true) {
+            if (currentRoute?.isSubscreen == true) {
                 TopUpBar({ navController.navigateUp() })
             } else {
                 TopBar(
@@ -163,7 +167,7 @@ fun TopBar(
 ) {
     CenterAlignedTopAppBar(
         navigationIcon = {
-            if(canNavigateBack) {
+            if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -173,10 +177,13 @@ fun TopBar(
             }
         },
         actions = {
-            IconButton(onClick = navigateToSettings) {
+            IconButton(
+                onClick = navigateToSettings,
+            ) {
                 Icon(
                     imageVector = Icons.Outlined.Settings,
                     contentDescription = stringResource(R.string.settings),
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         },
@@ -191,8 +198,8 @@ fun TopBar(
                     painter = image,
                     contentDescription = null,
                     modifier = Modifier
+                        .fillMaxHeight(0.7f)
                         .aspectRatio(1f)
-                        .fillMaxHeight()
                 )
                 Spacer(Modifier.width(dimensionResource(R.dimen.small)))
                 Text(
@@ -211,7 +218,7 @@ fun TopUpBar(
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         navigationIcon = {
             IconButton(onClick = navigateUp) {
                 Icon(

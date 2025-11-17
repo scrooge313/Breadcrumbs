@@ -2,10 +2,12 @@ package com.scrooge.breadcrumbs.databaseapi.data.internationalization
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    "languages",
+    tableName = "languages",
+    indices = [Index("language_code", unique = true)],
 )
 data class LanguageEntity(
     @PrimaryKey(autoGenerate = true)

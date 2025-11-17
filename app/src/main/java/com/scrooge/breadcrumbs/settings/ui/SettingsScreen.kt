@@ -76,8 +76,9 @@ fun SettingsScreen(
                     Dropdown(
                         items = allLanguages,
                         selectedItem = selectedLanguage,
-                        onItemSelected = settingsViewModel::setSelectedLanguages,
-                        labelProvider = { it },
+                        onItemSelected = { settingsViewModel.setSelectedLanguages(it.languageCode) },
+                        labelProvider = { it.label },
+                        placeholder = "WHATEVER"
                     )
                 }
                 Text("NEXT 1")
