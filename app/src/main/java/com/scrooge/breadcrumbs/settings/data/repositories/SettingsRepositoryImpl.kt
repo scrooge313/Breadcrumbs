@@ -63,7 +63,7 @@ class SettingsRepositoryImpl @Inject constructor(
 
     companion object {
         private val LANGUAGE_KEY = stringPreferencesKey("language")
-        private const val DEFAULT_LANGUAGE = "en"
+        private const val DEFAULT_LANGUAGE = "de" // todo detect from system
     }
 }
 

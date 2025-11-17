@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrooge.breadcrumbs.baking.domain.repositories.BakingsRepository
 import com.scrooge.breadcrumbs.baking.model.Baking
-import com.scrooge.breadcrumbs.core.CONFIGURATION_CHANGE_TIMEOUT
+import com.scrooge.breadcrumbs.core.ui.ViewModelUtils.stateIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -26,7 +26,6 @@ class OverviewViewModel @Inject constructor(
             })
         }.stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(CONFIGURATION_CHANGE_TIMEOUT),
             OverviewUiState(bakings = emptyList())
         )
 

@@ -9,6 +9,8 @@
     <string name="delete">Delete</string>
     <string name="back_button">Navigate back</string>
     <string name="settings">Settings</string>
+    <string name="select">Auswählen...</string>
+    <string name="language">Sprache</string>
     <plurals name="days_ago">
         <item quantity="one">%d day ago</item>
         <item quantity="other">%d days ago</item>

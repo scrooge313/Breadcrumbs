@@ -1,6 +1,6 @@
 package com.scrooge.breadcrumbs.core.ui
 
-import com.scrooge.breadcrumbs.core.CONFIGURATION_CHANGE_TIMEOUT
+import com.scrooge.breadcrumbs.core.CONFIGURATION_CHANGE_TIMEOUT_IN_MS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.stateIn
 
 object ViewModelUtils {
     fun <T> Flow<T>.stateIn(scope: CoroutineScope, defaultValue: T) =
-        this.stateIn(scope, SharingStarted.WhileSubscribed(CONFIGURATION_CHANGE_TIMEOUT), defaultValue)
+        this.stateIn(scope, SharingStarted.WhileSubscribed(CONFIGURATION_CHANGE_TIMEOUT_IN_MS), defaultValue)
 }
